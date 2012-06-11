@@ -155,6 +155,7 @@ set(SRC
 	BLI_voxel.h
 	BLI_winstuff.h
 	PIL_time.h
+	intern/pbvh_intern.h
 )
 
 if(WITH_BINRELOC)
