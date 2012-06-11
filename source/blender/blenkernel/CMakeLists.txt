@@ -123,6 +123,7 @@ set(SRC
 	intern/particle.c
 	intern/particle_system.c
 	intern/pbvh.c
+	intern/pbvh_bmesh.c
 	intern/pointcache.c
 	intern/property.c
 	intern/report.c
