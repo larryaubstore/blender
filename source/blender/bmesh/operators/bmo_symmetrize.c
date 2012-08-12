@@ -361,6 +361,11 @@ static BMFace *symm_face_create_v(BMesh *bm, BMFace *example,
 	BMFace *f_new;
 	int i;
 
+	/* TODO: check this further, not sure if there should even be
+	 * cases where this gets called with len of < 3 */
+	if (len < 3)
+		return NULL;
+
 	for (i = 0; i < len; i++) {
 		int j = (i + 1) % len;
 		fe[i] = BM_edge_exists(fv[i], fv[j]);
@@ -374,6 +379,7 @@ static BMFace *symm_face_create_v(BMesh *bm, BMFace *example,
 		BM_elem_attrs_copy(bm, bm, example, f_new);
 	BM_face_select_set(bm, f_new, TRUE);
 	BMO_elem_flag_enable(bm, f_new, SYMM_OUTPUT_GEOM);
+
 	return f_new;
 }
 
@@ -632,7 +638,8 @@ static void symm_kill_unused(Symm *symm)
 	/* Kill unused vertices */
 	BMO_ITER (v, &oiter, symm->op->slots_in, "input", BM_VERT) {
 		if (symm_co_side(symm, v->co) == SYMM_SIDE_KILL) {
-			if (BM_vert_edge_count(v) == 0)
+			/* TODO: why did this get changed? */
+			if (BM_vert_face_count(v) == 0)
 				BM_vert_kill(symm->bm, v);
 		}
 	}
